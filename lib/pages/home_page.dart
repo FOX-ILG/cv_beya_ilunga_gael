@@ -45,7 +45,7 @@ class HomePage extends StatelessWidget {
             const ListTile(
               leading: Icon(Icons.school, color: Colors.indigo),
               title: Text('Licence Informatique', style: TextStyle(fontWeight: FontWeight.bold)),
-              subtitle: Text('Institut Superieur d\'Informatique et de Gestio — 2023 à aujourd\'hui'),
+              subtitle: Text('Institut Superieur d\'Informatique et de Gestion — 2023 à aujourd\'hui'),
             ),
             const Divider(),
             const ListTile(
@@ -108,7 +108,7 @@ class HomePage extends StatelessWidget {
         _section(theme, 'Centres d\'intérêt', Wrap(
           spacing: 8, runSpacing: 8,
           children: const [
-            Chip(label: Text('Programmation'), backgroundColor: Color(0xFFE8EAF6), labelStyle: TextStyle(color: Colors.indigo, fontWeight: FontWeight.bold)), 
+            Chip(label: Text('Développement'), backgroundColor: Color(0xFFE8EAF6), labelStyle: TextStyle(color: Colors.indigo, fontWeight: FontWeight.bold)), 
             Chip(label: Text('Musique'), backgroundColor: Color(0xFFE8EAF6), labelStyle: TextStyle(color: Colors.indigo, fontWeight: FontWeight.bold)),
             Chip(label: Text('Basketball'), backgroundColor: Color(0xFFE8EAF6), labelStyle: TextStyle(color: Colors.indigo, fontWeight: FontWeight.bold)), 
             Chip(label: Text('Lecture'), backgroundColor: Color(0xFFE8EAF6), labelStyle: TextStyle(color: Colors.indigo, fontWeight: FontWeight.bold)),

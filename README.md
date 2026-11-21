@@ -1,17 +1,58 @@
 # cv_beya_ilunga_gael
 
-A new Flutter project.
+Application mobile Flutter présentant mon CV, ma famille et mes coordonnées, avec authentification.
 
-## Getting Started
+## Fonctionnalités
 
-This project is a starting point for a Flutter application.
+- Page de connexion (identifiant + mot de passe masqué)
+- Page CV complet (photo, formation, expériences, compétences, langues, intérêts)
+- Page famille (photo, nom, lien de parenté, profession)
+- Page contact (téléphone, email, adresse, LinkedIn, GitHub — cliquables)
+- Navigation par `BottomNavigationBar` + `Drawer`
+- Déconnexion
 
-A few resources to get you started if this is your first Flutter project:
+## Vidéo de démonstration (TP2)
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+https://youtu.be/a8UbZL6BNFA
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Pour lancer le projet:
+-Demarrer **XAMPP** (Appache + MySQL)
+-Avoir le projet "api-test" dans le pc
+-Avoir importer la BD "api.sql" dans MySQL
+-Lancer l'appli avec "flutter dans vscode
+
+## Identifiants de démo
+
+- Identifiant : `gael@gmail.com`
+- Mot de passe : `123456`
+
+## Technologies
+
+- Flutter / Dart
+- Material 3
+- `url_launcher`
+
+## Captures d'écran
+
+### Page de connexion
+![Login](captures/login1.png/login2.png)
+
+### Page CV (accueil)
+![CV](captures/home1.png/home2.png/home3.png/home4.png/home5.png)
+
+### Page Famille
+![Famille](captures/famille1.png/famille2.png)
+
+### Page Contact
+![Contact](captures/contact1.png/contact2.png)
+
+### Menu Drawer
+![Drawer](captures/drawer.png)
+
+## Installation
+
+```bash
+git clone https://github.com/TON_USERNAME/cv_beya_ilunga_gael.git
+cd cv_beya_ilunga_gael
+flutter pub get
+flutter run

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/api_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -9,114 +10,67 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  final _idController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passController = TextEditingController();
-
-  bool _masquer = true;
+  bool _chargement = false;
   String? _erreur;
 
-  static const String _idValide = 'gael';
-  static const String _mdpValide = '1234';
-
-  @override
-  void dispose() {
-    _idController.dispose();
-    _passController.dispose();
-    super.dispose();
-  }
-
-  void _seConnecter() {
+  Future<void> _seConnecter() async {
     if (!_formKey.currentState!.validate()) return;
+    setState(() { _chargement = true; _erreur = null; });
 
-    if (_idController.text.trim() == _idValide &&
-        _passController.text.trim() == _mdpValide) {
+    try {
+      await ApiService.login(_emailController.text.trim(), _passController.text.trim());
+      if (!mounted) return;
       Navigator.pushReplacementNamed(context, '/home');
-    } else {
+    } catch (e) {
       setState(() {
-        _erreur = 'Identifiant ou mot de passe incorrect';
+        _chargement = false;
+        _erreur = e.toString().replaceAll('Exception: ', '');
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Color(0xFFE8EAF6), Colors.white], // Dégradé du bleu clair vers le blanc
-            ),
-          ),
-          child: Center(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: Colors.indigo.withOpacity(0.1),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(Icons.account_circle, size: 90, color: theme.colorScheme.primary),
-                    ),
-                    const SizedBox(height: 24),
-                    Text('Connexion', style: theme.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold, color: Colors.indigo)),
-                    const SizedBox(height: 32),
-                    TextFormField(
-                      controller: _idController,
-                      decoration: const InputDecoration(
-                        labelText: 'Identifiant',
-                        prefixIcon: Icon(Icons.person, color: Colors.indigo),
-                      ),
-                      validator: (v) => (v == null || v.trim().isEmpty) ? 'Entrez votre identifiant' : null,
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _passController,
-                      obscureText: _masquer,
-                      onFieldSubmitted: (_) => _seConnecter(),
-                      decoration: InputDecoration(
-                        labelText: 'Mot de passe',
-                        prefixIcon: const Icon(Icons.lock, color: Colors.indigo),
-                        suffixIcon: IconButton(
-                          icon: Icon(_masquer ? Icons.visibility : Icons.visibility_off, color: Colors.grey),
-                          onPressed: () => setState(() => _masquer = !_masquer),
-                        ),
-                      ),
-                      validator: (v) => (v == null || v.isEmpty) ? 'Entrez votre mot de passe' : null,
-                    ),
-                    if (_erreur != null) ...[
-                      const SizedBox(height: 16),
-                      Text(_erreur!, style: TextStyle(color: theme.colorScheme.error, fontWeight: FontWeight.bold)),
-                    ],
-                    const SizedBox(height: 24),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 55,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.indigo,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                          elevation: 4,
-                        ),
-                        onPressed: _seConnecter,
-                        child: const Text('Se connecter', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
-                      ),
-                    ),
-                  ],
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                const Icon(Icons.account_circle, size: 100, color: Colors.indigo),
+                const SizedBox(height: 24),
+                const Text('Connexion', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.indigo)),
+                const SizedBox(height: 32),
+                TextFormField(
+                  controller: _emailController,
+                  decoration: const InputDecoration(labelText: 'Email', prefixIcon: Icon(Icons.email)),
+                  validator: (v) => v!.isEmpty ? 'Entrez l\'email' : null,
                 ),
-              ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _passController,
+                  obscureText: true,
+                  decoration: const InputDecoration(labelText: 'Mot de passe', prefixIcon: Icon(Icons.lock)),
+                  validator: (v) => v!.isEmpty ? 'Entrez le mot de passe' : null,
+                ),
+                if (_erreur != null) ...[
+                  const SizedBox(height: 16),
+                  Text(_erreur!, style: const TextStyle(color: Colors.red)),
+                ],
+                const SizedBox(height: 24),
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: _chargement ? null : _seConnecter,
+                    child: _chargement ? const CircularProgressIndicator() : const Text('Se connecter'),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
